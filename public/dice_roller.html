@@ -29,11 +29,24 @@
     .rolling img {
       animation: spin 0.6s linear infinite;
     }
-
     @keyframes spin {
-      0%   { transform: rotate(0deg);   }
-      100% { transform: rotate(360deg); }
-    }
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(720deg) scale(1.1); /* 2 full spins fast */
+  }
+  50% {
+    transform: rotate(1440deg) scale(1.15); /* 4 full spins */
+  }
+  75% {
+    transform: rotate(2160deg) scale(1.05); /* 6 spins */
+  }
+  100% {
+    transform: rotate(2880deg) scale(1); /* 8 full spins */
+  }
+}
+
 
     button {
       padding: 15px 35px;
@@ -69,7 +82,7 @@
         const randomNumber = Math.floor(Math.random() * 6) + 1;
         diceImage.src = `../assets/images/dice${randomNumber}.png`; // ✅ Use backticks for template strings
         diceContainer.classList.remove("rolling");
-      }, 1000); // matches animation time
+      }, 2000); // matches animation time
     }
   </script>
 </body>
