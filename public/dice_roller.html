@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dice Roller</title>
   <style>
+    
     body {
       font-family: Arial, sans-serif;
       text-align: center;
@@ -103,24 +104,39 @@
     const rollBtn = document.getElementById("rollBtn");
   
     function rollDice() {
-      rollBtn.disabled = true;
-      diceSound.currentTime = 0;
-      diceSound.play().catch(function (err) {
-        console.log("Sound failed to play:", err);
-      });
+  rollBtn.disabled = true;
+  diceContainer.classList.add("rolling");
 
-      diceContainer.classList.add("rolling");
+  let rollDuration = 2000; // 2 seconds
+  let intervalSpeed = 100; // change dice face every 100ms
+  let elapsed = 0;
+
+  const rollingInterval = setInterval(function () {
+    const random = Math.floor(Math.random() * 6) + 1;
+    diceImage.src = "../assets/images/dice" + random + ".png";
+    elapsed += intervalSpeed;
+
+    if (elapsed >= rollDuration) {
+      clearInterval(rollingInterval);
+      diceContainer.classList.remove("rolling");
+
+      // Final result
+      const finalNumber = Math.floor(Math.random() * 6) + 1;
+      diceImage.src = "../assets/images/dice" + finalNumber + ".png";
 
       setTimeout(function () {
-        const randomNumber = Math.floor(Math.random() * 6) + 1;
-        diceImage.src = "../assets/images/dice" + randomNumber + ".png";
-        diceContainer.classList.remove("rolling");
-
-        setTimeout(function () {
-          rollBtn.disabled = false;
-        }, 1500);
-      }, 2000);
+        rollBtn.disabled = false;
+      }, 1000);
     }
+  }, intervalSpeed);
+
+  // Optional: Play sound
+  diceSound.currentTime = 0;
+  diceSound.play().catch((err) => {
+    console.log("Sound play failed:", err);
+  });
+}
+
   </script>
   
   </script>
