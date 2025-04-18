@@ -29,24 +29,14 @@
     .rolling img {
       animation: spin 0.6s linear infinite;
     }
-    @keyframes spin {
-  0% {
-    transform: rotate(0deg) scale(1);
-  }
-  25% {
-    transform: rotate(720deg) scale(1.1); /* 2 full spins fast */
-  }
-  50% {
-    transform: rotate(1440deg) scale(1.15); /* 4 full spins */
-  }
-  75% {
-    transform: rotate(2160deg) scale(1.05); /* 6 spins */
-  }
-  100% {
-    transform: rotate(2880deg) scale(1); /* 8 full spins */
-  }
-}
 
+    @keyframes spin {
+      0%   { transform: rotate(0deg) scale(1); }
+      25%  { transform: rotate(720deg) scale(1.1); }
+      50%  { transform: rotate(1440deg) scale(1.15); }
+      75%  { transform: rotate(2160deg) scale(1.05); }
+      100% { transform: rotate(2880deg) scale(1); }
+    }
 
     button {
       padding: 15px 35px;
@@ -59,31 +49,48 @@
       transition: background-color 0.3s;
     }
 
-    button:hover {
+    button:hover:enabled {
       background-color: #00695c;
+    }
+
+    button:disabled {
+      background-color: #b0b0b0;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
   <h1>🎲 Dice Roller</h1>
+
   <div class="dice-container" id="diceContainer">
     <img id="diceImage" src="../assets/images/dice1.png" alt="Dice">
   </div>
-  <button onclick="rollDice()">Roll Dice</button>
+
+  <button id="rollBtn" onclick="rollDice()">Roll Dice</button>
 
   <script>
     const diceImage = document.getElementById("diceImage");
     const diceContainer = document.getElementById("diceContainer");
-
+    const rollBtn = document.getElementById("rollBtn");
+  
     function rollDice() {
+      rollBtn.disabled = true;
       diceContainer.classList.add("rolling");
-
+  
       setTimeout(() => {
         const randomNumber = Math.floor(Math.random() * 6) + 1;
-        diceImage.src = `../assets/images/dice${randomNumber}.png`; // ✅ Use backticks for template strings
+        diceImage.src = `../assets/images/dice${randomNumber}.png`;
         diceContainer.classList.remove("rolling");
-      }, 2000); // matches animation time
+  
+        // ⏳ Wait an additional 1.5s before enabling the button again
+        setTimeout(() => {
+          rollBtn.disabled = false;
+        }, 2000);
+  
+      }, 2000); // dice rolling animation time
     }
+  </script>
+  
   </script>
 </body>
 </html>
